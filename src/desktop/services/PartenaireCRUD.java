@@ -8,37 +8,143 @@ package desktop.services;
 import desktop.entities.Partenaire;
 import desktop.interfaces.EntityCRUD;
 import desktop.tools.MyConnection;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  *
  * @author msi
  */
 public class PartenaireCRUD implements EntityCRUD<Partenaire> {
-
-   
-
-    public void AddEntity(Partenaire t) {
+ 
+    
+    /**
+     *
+     * @param p
+     */
+    @Override
+     public void AddEntity(Partenaire p) {
         try {
-            String requete = "INSERT INTO partenaire (nom,prenom) VALUES (?,?)";
-            PreparedStatement pst = MyConnection.getInstance().getCnx().prepareStatement(requete);
-
-            pst.setString(1, t.getNom());
-            pst.setString(2, t.getEmail());
+            String requete1 = "INSERT INTO partenaire (id,nom,email,p) VALUES(?,?,?,?)";
+            PreparedStatement pst = MyConnection.getInstance().getCnx().prepareStatement(requete1);
+            pst.setInt(1, p.getId());
+            pst.setString(2, p.getNom());
+            pst.setString(3, p.getEmail());
             pst.executeUpdate();
+            System.out.println("Bravo partenaire ajouté !");
+            
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+    
+    public ObservableList<Partenaire> listerPartenaires() {
+        ObservableList<Partenaire> myList = FXCollections.observableArrayList();
+        try {
+            
+            String requete2 = "Select * FROM partenaire";
+            Statement st = MyConnection.getInstance().getCnx().createStatement();
+            ResultSet rs = st.executeQuery(requete2);
+            while (rs.next()) {
+               Partenaire rec = new Partenaire();
+                
+                rec.setId(rs.getInt("id"));
+                rec.setNom(rs.getString("nom"));
+                rec.setEmail(rs.getString("email"));
 
-            System.out.println("success !!");
+                
+                myList.add(rec);
+                
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            
+        }
+        return myList;
+    }
+    
+    public void delete(Partenaire p) {
+        
+        try {
+            String requete3 = "DELETE FROM partenaire WHERE id=" + p.getId();
+            Statement st = MyConnection.getInstance().getCnx().createStatement();
+            
+            st.executeUpdate(requete3);
+            System.out.println("Partenaire supprimé !");
+            
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        
+    }
+
+    public ObservableList<Partenaire> SearchPart(String entry) {
+        ObservableList<Partenaire> myList = FXCollections.observableArrayList();
+        try {
+            
+            PreparedStatement ps = MyConnection.getInstance().getCnx().prepareStatement("SELECT * FROM partenaire  nom LIKE ? or email LIKE ? ");
+            ps.setString(1, "%" + entry + "%");
+            ps.setString(2, "%" + entry + "%");
+           
+            
+            ResultSet rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                Partenaire rec = new Partenaire();
+                rec.setId(rs.getInt("id"));
+                rec.setNom(rs.getString("nom"));
+                rec.setEmail(rs.getString("email"));
+                
+                myList.add(rec);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return myList;
+    }
+
+    public void update(Partenaire r, String nom, String email) {
+        try {
+            String requete4 = "UPDATE partenaire SET nom=?, email=? WHERE id=?";
+            PreparedStatement pst = MyConnection.getInstance().getCnx().prepareStatement(requete4);
+            pst.setString(1, nom);
+            pst.setString(2, email);
+          
+            pst.executeUpdate();
+            System.out.println("Partenaire modifié !");
+            
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+
+
+    
+    public void update(Partenaire r) {
+        try {
+            String requete4 = "UPDATE partenaire SET nom=?,email=? WHERE id=?";
+            PreparedStatement pst = MyConnection.getInstance().getCnx().prepareStatement(requete4);
+            pst.setString(1, r.getNom());
+            pst.setString(2, r.getEmail());
+           
+            pst.executeUpdate();
+            System.out.println("Partenaire modifié !");
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
     }
 
-    @Override
+       @Override
     public List<Partenaire> display() {
         List<Partenaire> myList = new ArrayList<>();
             try {
@@ -69,5 +175,6 @@ public class PartenaireCRUD implements EntityCRUD<Partenaire> {
     
 return myList;
 }
+
 }
 

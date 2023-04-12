@@ -6,10 +6,9 @@
 package desktop.interfaces;
 
 import desktop.entities.Partenaire;
-import desktop.tools.MyConnection;
+import desktop.services.PartenaireCRUD;
 import java.net.URL;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,7 +20,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
@@ -30,62 +28,91 @@ import javafx.scene.control.cell.PropertyValueFactory;
  * @author msi
  */
 public class GestionPartenaireController implements Initializable {
-    @FXML
-    private TableView<Partenaire> partenaireTable;
-
-    @FXML
-    private TextField nomField;
 
     @FXML
     private TextField emailField;
+    @FXML
+    private TextField nomField;
+    @FXML
+    private Button btnadd;
+    @FXML
+    private Button btnupdate;
+    @FXML
+    private Button btndelete;
+    @FXML
+    private TableView<Partenaire> partenaireTable;
+    @FXML
+    private TableColumn<Partenaire, Integer> idcol;
+    @FXML
+    private TableColumn<Partenaire, String> nomcol;
+    @FXML
+    private TableColumn<Partenaire, String> emailcol;
+    
+    private List<Partenaire> list_categorie;
+    PartenaireCRUD su=new PartenaireCRUD();
+      ObservableList<Partenaire> data=FXCollections.observableArrayList();
 
-    private ObservableList<Partenaire> partenaireList;
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // Initialize the columns of the TableView
-        TableColumn<Partenaire, Integer> idCol = new TableColumn<>("ID");
-        TableColumn<Partenaire, String> nomCol = new TableColumn<>("Nom");
-        TableColumn<Partenaire, String> emailCol = new TableColumn<>("Email");
-
-        idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
-        nomCol.setCellValueFactory(new PropertyValueFactory<>("nom"));
-        emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
-
-        partenaireTable.getColumns().addAll(idCol, nomCol, emailCol);
-
-        // Initialize the ObservableList of Partenaire objects
-        partenaireList = FXCollections.observableArrayList();
-
-        // Set the items of the TableView to the ObservableList of Partenaire objects
-        partenaireTable.setItems(partenaireList);
-
-        // Add a listener to the TableView to display the selected Partenaire object's attributes in the TextField objects
-        partenaireTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            if (newSelection != null) {
-                nomField.setText(newSelection.getNom());
-                emailField.setText(newSelection.getEmail());
-            } else {
-                nomField.setText("");
-                emailField.setText("");
-            }
-        });
-
-        // Set up input validation for the email TextField
-        TextFormatter<String> emailFormatter = new TextFormatter<>(change -> {
-            if (change.getText().contains("@")) {
-                return change;
-            }
-            return null;
-        });
-        emailField.setTextFormatter(emailFormatter);
-
-        // Add listeners to the TextField objects to mark the form as "modified"
-        nomField.textProperty().addListener((observable, oldValue, newValue) -> {
-            partenaireTable.getSelectionModel().clearSelection();
-        });
-        emailField.textProperty().addListener((observable, oldValue, newValue) -> {
-            partenaireTable.getSelectionModel().clearSelection();
-        });
+    /**
+     * Initializes the controller class.
+     */
+     @Override
+    public void initialize(URL url, ResourceBundle rb) { 
     }
-}
+       public void refreshList(){
+        data.clear();
+        data=FXCollections.observableArrayList(su.display());
+       
+        nomcol.setCellValueFactory(new PropertyValueFactory<>("nom"));
+        emailcol.setCellValueFactory(new PropertyValueFactory<>("email"));
+       
+        partenaireTable.setItems(data);
+    }
+
+    @FXML
+    private void addPartenairee(ActionEvent event) {
+        PartenaireCRUD pc = new PartenaireCRUD();
+        String nom = nomField.getText();
+       String email = emailField.getText();
+       
+        
+         if (nom.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("'Nom' must be inputed");
+            alert.setTitle("Problem");
+            alert.setHeaderText(null);
+            alert.showAndWait();
+        }  else 
+          if (email.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("'email' must be inputed");
+            alert.setTitle("Problem");
+            alert.setHeaderText(null);
+            alert.showAndWait();
+        }  else
+          {
+                Partenaire p = new Partenaire( nom,email);
+                pc.AddEntity(p);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Success");
+                alert.setContentText("Added .");
+                alert.setHeaderText(null);
+                alert.show();
+                //redirectToListProduit();
+            }
+        }
+
+    @FXML
+    private void updatePartenaire(ActionEvent event) {
+    }
+
+    @FXML
+    private void deletePartenaire(ActionEvent event) {
+    }
+    }
+
+   
+
+    
+  
+

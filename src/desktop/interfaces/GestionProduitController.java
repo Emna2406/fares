@@ -22,13 +22,10 @@ import javafx.scene.control.TextField;
  */
 
 public class GestionProduitController implements Initializable  {
-   @FXML
    private TextField nomField;
  
-   @FXML
    private TextField stockField;
  
-   @FXML
    private TableView<Produit> produitTable;
  
    private ObservableList<Produit> produitList;
@@ -38,13 +35,11 @@ public class GestionProduitController implements Initializable  {
        produitTable.setItems(produitList);
    }
  
-   @FXML
    private void addProduit() {
        Produit produit = new Produit(nomField.getText(), Integer.parseInt(stockField.getText()));
        produitList.add(produit);
    }
  
-   @FXML
    private void updateProduit() {
        Produit selectedProduit = produitTable.getSelectionModel().getSelectedItem();
        if (selectedProduit != null) {
@@ -54,7 +49,6 @@ public class GestionProduitController implements Initializable  {
        }
    }
  
-   @FXML
    private void deleteProduit() {
        Produit selectedProduit = produitTable.getSelectionModel().getSelectedItem();
        if (selectedProduit != null) {

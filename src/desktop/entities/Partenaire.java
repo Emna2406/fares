@@ -5,11 +5,21 @@
  */
 package desktop.entities;
 
+import javafx.collections.ObservableList;
+
 /**
  *
  * @author msi
  */
 public class Partenaire {
+
+    public static void add(Partenaire partenaire) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public static void setItems(ObservableList<Partenaire> list) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
      private int id;
     private String nom;
     private String email;
@@ -26,6 +36,14 @@ public class Partenaire {
     }
 
     public Partenaire() {
+    }
+
+    public Partenaire(String text) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public Partenaire(int aInt, int aInt0, String string, String string0) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
   

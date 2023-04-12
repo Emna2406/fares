@@ -19,14 +19,14 @@
             <Font name="Perpetua Titling MT Bold" size="29.0" />
          </font>
       </Text>
-      <Text layoutX="23.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NOM">
+      <Text layoutX="17.0" layoutY="202.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NOM">
          <font>
             <Font name="Perpetua Bold" size="18.0" />
          </font>
       </Text>
-      <TextField fx:id="emailField" layoutX="16.0" layoutY="279.0" prefHeight="40.0" prefWidth="282.0" />
-      <TextField fx:id="nomField" layoutX="16.0" layoutY="155.0" prefHeight="40.0" prefWidth="282.0" />
-      <Text layoutX="23.0" layoutY="256.0" strokeType="OUTSIDE" strokeWidth="0.0" text="email">
+      <TextField fx:id="emailField" layoutX="16.0" layoutY="307.0" prefHeight="40.0" prefWidth="282.0" />
+      <TextField fx:id="nomField" layoutX="16.0" layoutY="217.0" prefHeight="40.0" prefWidth="282.0" />
+      <Text layoutX="23.0" layoutY="287.0" strokeType="OUTSIDE" strokeWidth="0.0" text="email">
          <font>
             <Font name="Perpetua Titling MT Bold" size="18.0" />
          </font>
@@ -38,9 +38,9 @@
                   <Font name="Perpetua Titling MT Bold" size="15.0" />
                </font>
             </Button>
-            <Button fx:id="btnadd" layoutX="67.0" layoutY="105.0" mnemonicParsing="false" onAction="#addPartenaire" prefHeight="40.0" prefWidth="131.0" text="ajouter">
+            <Button fx:id="btnadd" layoutX="67.0" layoutY="105.0" mnemonicParsing="false" onAction="#addPartenairee" prefHeight="40.0" prefWidth="131.0" text="ajouter">
                <font>
-                  <Font name="Perpetua Titling MT Bold" size="16.0" />
+                  <Font name="Perpetua Titling MT Bold" size="18.0" />
                </font>
             </Button>
             <Button fx:id="btnupdate" layoutX="67.0" layoutY="158.0" mnemonicParsing="false" onAction="#updatePartenaire" prefHeight="40.0" prefWidth="131.0" text="modifier">

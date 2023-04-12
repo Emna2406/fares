@@ -28,6 +28,7 @@ public class Home extends Application {
         
         try {
             Parent root = FXMLLoader.load(getClass().getResource("Home.fxml"));
+
             Scene scene = new Scene(root);
             
             primaryStage.setTitle("Main application!");
@@ -37,7 +38,8 @@ public class Home extends Application {
             System.out.println(ex.getMessage());
         }
     }
-
+   
+  
     /**
      * @param args the command line arguments
      */
