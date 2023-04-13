@@ -7,20 +7,28 @@ package desktop.interfaces;
 
 import desktop.entities.Partenaire;
 import desktop.services.PartenaireCRUD;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.Label;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -48,9 +56,11 @@ public class GestionPartenaireController implements Initializable {
     @FXML
     private TableColumn<Partenaire, String> emailcol;
     
+    private Partenaire part;
+    
     private List<Partenaire> list_categorie;
     PartenaireCRUD su=new PartenaireCRUD();
-      ObservableList<Partenaire> data=FXCollections.observableArrayList();
+      ObservableList<Partenaire> data;
 
 
     /**
@@ -58,15 +68,49 @@ public class GestionPartenaireController implements Initializable {
      */
      @Override
     public void initialize(URL url, ResourceBundle rb) { 
-    }
-       public void refreshList(){
-        data.clear();
-        data=FXCollections.observableArrayList(su.display());
+        setBtn();
+        data=FXCollections.observableList(su.display());
        
+        idcol.setCellValueFactory(new PropertyValueFactory<>("id"));
         nomcol.setCellValueFactory(new PropertyValueFactory<>("nom"));
         emailcol.setCellValueFactory(new PropertyValueFactory<>("email"));
        
         partenaireTable.setItems(data);
+        
+        partenaireTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if(newSelection != null)
+            {
+                part = newSelection;
+                setBtn();
+            }
+
+        });
+        
+    }
+    public void refreshList(){
+        data.clear();
+        data=FXCollections.observableList(su.display());
+       
+        idcol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        nomcol.setCellValueFactory(new PropertyValueFactory<>("nom"));
+        emailcol.setCellValueFactory(new PropertyValueFactory<>("email"));
+       
+        partenaireTable.setItems(data);
+        
+    }
+    
+    private void setBtn()
+    {
+        if (part == null)
+        {
+            btnupdate.setDisable(true);
+            btndelete.setDisable(true);
+        }
+        else
+        {
+            btnupdate.setDisable(false);
+            btndelete.setDisable(false);
+        }
     }
 
     @FXML
@@ -100,19 +144,39 @@ public class GestionPartenaireController implements Initializable {
                 alert.show();
                 //redirectToListProduit();
             }
+         
+         refreshList();
         }
 
     @FXML
     private void updatePartenaire(ActionEvent event) {
+        PartenaireCRUD pc = new PartenaireCRUD();
+        String nom = nomField.getText();
+        String email = emailField.getText();
+        pc.update(part.getId(), new Partenaire(nom, email));
+        refreshList();
     }
 
     @FXML
     private void deletePartenaire(ActionEvent event) {
-    }
+        PartenaireCRUD pc = new PartenaireCRUD();
+        pc.delete(part);
+        refreshList();
     }
 
    
 
-    
-  
+    @FXML
+    private void redirectToHomePage(ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("Home.fxml"));
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage()+ ex.getStackTrace());
+        }
+}
 
+}

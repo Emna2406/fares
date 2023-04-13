@@ -35,7 +35,7 @@ public class PartenaireCRUD implements EntityCRUD<Partenaire> {
     @Override
      public void AddEntity(Partenaire p) {
         try {
-            String requete1 = "INSERT INTO partenaire (id,nom,email,p) VALUES(?,?,?,?)";
+            String requete1 = "INSERT INTO partenaire (id,nom,email) VALUES(?,?,?)";
             PreparedStatement pst = MyConnection.getInstance().getCnx().prepareStatement(requete1);
             pst.setInt(1, p.getId());
             pst.setString(2, p.getNom());
@@ -112,7 +112,7 @@ public class PartenaireCRUD implements EntityCRUD<Partenaire> {
         }
         return myList;
     }
-
+/*
     public void update(Partenaire r, String nom, String email) {
         try {
             String requete4 = "UPDATE partenaire SET nom=?, email=? WHERE id=?";
@@ -127,15 +127,16 @@ public class PartenaireCRUD implements EntityCRUD<Partenaire> {
             System.err.println(ex.getMessage());
         }
     }
-
+*/
 
     
-    public void update(Partenaire r) {
+    public void update(int id, Partenaire r) {
         try {
             String requete4 = "UPDATE partenaire SET nom=?,email=? WHERE id=?";
             PreparedStatement pst = MyConnection.getInstance().getCnx().prepareStatement(requete4);
             pst.setString(1, r.getNom());
             pst.setString(2, r.getEmail());
+            pst.setInt(3, id);
            
             pst.executeUpdate();
             System.out.println("Partenaire modifié !");
@@ -145,8 +146,8 @@ public class PartenaireCRUD implements EntityCRUD<Partenaire> {
     }
 
        @Override
-    public List<Partenaire> display() {
-        List<Partenaire> myList = new ArrayList<>();
+    public ArrayList<Partenaire> display() {
+        ArrayList<Partenaire> myList = new ArrayList<>();
             try {
         String requete = "SELECT * FROM partenaire" ;
         Statement st;
@@ -161,7 +162,7 @@ public class PartenaireCRUD implements EntityCRUD<Partenaire> {
             p.setNom(rs.getString("nom"));
             p.setEmail(rs.getString("email"));
             myList.add(p);
-
+            System.out.println(p.getEmail());
             
             
         }

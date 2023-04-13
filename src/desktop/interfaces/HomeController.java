@@ -59,7 +59,7 @@ public class HomeController {
             stage.setScene(scene);
             stage.show();
         } catch (IOException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(ex.getMessage()+ ex.getStackTrace());
         }
     }
 

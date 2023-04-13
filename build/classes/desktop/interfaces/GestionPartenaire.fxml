@@ -33,7 +33,7 @@
       </Text>
       <Pane layoutX="539.0" layoutY="30.0" prefHeight="330.0" prefWidth="264.0" style="-fx-border-color: #FDFEFE; -fx-background-color: #FF3364;">
          <children>
-            <Button layoutX="47.0" layoutY="23.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="171.0" text="Menu principal">
+            <Button layoutX="47.0" layoutY="23.0" mnemonicParsing="false" onAction="#redirectToHomePage" prefHeight="40.0" prefWidth="171.0" text="Menu principal">
                <font>
                   <Font name="Perpetua Titling MT Bold" size="15.0" />
                </font>
